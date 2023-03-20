@@ -3,6 +3,8 @@ from dino_runner.utils.constants import SCREEN_WIDTH
 
 class Obstacle:
     def __init__(self, images, type):
+        self.images = images
+        self.type = type       
         self.image = images[type]
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH
