@@ -6,6 +6,8 @@ TITLE = "jala Dino Runner"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
+FONT_STYLE = "freesansbold.ttf"
+
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 
 # Assets Constants
