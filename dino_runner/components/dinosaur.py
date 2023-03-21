@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, SOUNDS
 
 X_POS = 80
 Y_POS = 312
@@ -50,6 +50,7 @@ class Dinosaur:
         if user_input[pygame.K_UP] and not self.dino_jump and not self.dino_duck:
             self.dino_jump = True
             self.dino_run = False
+            SOUNDS[1].play()
         elif not self.dino_jump:
             self.dino_run = True
         elif self.dino_duck:

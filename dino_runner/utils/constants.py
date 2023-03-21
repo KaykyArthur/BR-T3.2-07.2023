@@ -1,5 +1,6 @@
 import pygame
 import os
+pygame.mixer.init()
 
 # Global Constants
 TITLE = "jala Dino Runner"
@@ -9,9 +10,16 @@ FPS = 30
 FONT_STYLE = "freesansbold.ttf"
 
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
+SOUNDS_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", 'Sounds')
 
 # Assets Constants
 ICON = pygame.image.load(os.path.join(IMG_DIR, "DinoWallpaper.png"))
+
+SOUNDS = [
+    pygame.mixer.Sound(os.path.join(SOUNDS_DIR, "die.wav")),
+    pygame.mixer.Sound(os.path.join(SOUNDS_DIR, "jump.wav")),
+    pygame.mixer.Sound(os.path.join(SOUNDS_DIR, "point.wav")),
+]
 
 RUNNING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1.png")),
@@ -66,6 +74,7 @@ BIRD = [
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
+GAMEOVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
 
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 

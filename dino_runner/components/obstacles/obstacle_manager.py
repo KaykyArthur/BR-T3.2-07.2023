@@ -7,6 +7,8 @@ from dino_runner.components.obstacles.bird import Bird
 from dino_runner.utils.constants import SMALL_CACTUS
 from dino_runner.utils.constants import LARGE_CACTUS
 from dino_runner.utils.constants import BIRD
+from dino_runner.utils.constants import SOUNDS
+
 
 class ObstacleManager:
     def __init__(self):
@@ -26,6 +28,7 @@ class ObstacleManager:
 
             if game.player.dino_rect.colliderect(obstacle.rect):
                 pygame.time.delay(500)
+                SOUNDS[0].play()
                 game.playing = False
                 game.death_count+=1
                 break                

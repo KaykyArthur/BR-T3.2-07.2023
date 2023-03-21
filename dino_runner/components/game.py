@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE, GAMEOVER, SOUNDS
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 
@@ -34,7 +34,6 @@ class Game:
     def run(self):
         # Game loop: events - update - draw
         self.playing = True
-        self.reset_game()
         while self.playing:
             self.events()
             self.update()
@@ -61,6 +60,7 @@ class Game:
 
         if self.score %100 == 0:
             self.game_speed+=5
+            SOUNDS[2].play()
 
     def draw(self):
         self.clock.tick(FPS)
@@ -87,6 +87,13 @@ class Game:
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
 
+    def show_menu_texts(self, menu_text, position):
+        font = pygame.font.Font(FONT_STYLE, 20)
+        menu_text = font.render(menu_text, True, (0,0,0))
+        menu_text_rect = menu_text.get_rect()
+        menu_text_rect.center = position
+        self.screen.blit(menu_text, menu_text_rect)
+
     def show_menu(self):
         self.screen.fill((255,255,255))
 
@@ -94,17 +101,12 @@ class Game:
         half_screen_width = SCREEN_WIDTH //2
 
         if self.death_count == 0:
-            font = pygame.font.Font(FONT_STYLE, 22)
-            text = font.render('Press (S) to start playing', True, (0,0,0))
-            text_rect = text.get_rect()
-            text_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(text, text_rect)
+            self.screen.blit(ICON, (510,100))
+            self.show_menu_texts('Press (S) to start playing', (half_screen_width, half_screen_height))
         else:
-            font = pygame.font.Font(FONT_STYLE, 22)
-            text = font.render('Press (C) to start playing', True, (0,0,0))
-            text_rect = text.get_rect()
-            text_rect.center = (half_screen_width, half_screen_height)
-            self.screen.blit(text, text_rect)
+            self.screen.blit(GAMEOVER, (355,200))
+            self.show_menu_texts('Press (C) to continue playing', (half_screen_width, half_screen_height - 30))
+            self.show_menu_texts('Press (R) to start a new game', (half_screen_width, half_screen_height + 30))
 
         pygame.display.update()
 
@@ -120,4 +122,8 @@ class Game:
                     self.run()
                 elif pygame.key.get_pressed()[pygame.K_c]:
                     self.run()
+                    self.obstacle_manager.reset_obstacles()
+                elif pygame.key.get_pressed()[pygame.K_r]:
+                    self.run()
+                    self.reset_game()
 
