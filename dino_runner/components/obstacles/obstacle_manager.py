@@ -1,13 +1,9 @@
 import random
 import pygame
 
-from dino_runner.components.obstacles.cactus import Small_Cactus
-from dino_runner.components.obstacles.cactus import Large_Cactus
+from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.components.obstacles.bird import Bird
-from dino_runner.utils.constants import SMALL_CACTUS
-from dino_runner.utils.constants import LARGE_CACTUS
-from dino_runner.utils.constants import BIRD
-from dino_runner.utils.constants import SOUNDS
+from dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS, BIRD, SOUNDS, MUSICS, BAT
 
 
 class ObstacleManager:
@@ -15,22 +11,30 @@ class ObstacleManager:
         self.obstacles = []
 
     def update(self, game):
-        self.obstacle_type = random.randint(0, 2)
+        self.obstacle_type = random.randint(0, 3)
         if len(self.obstacles) == 0 and self.obstacle_type == 0:
-            self.obstacles.append(Small_Cactus(SMALL_CACTUS))
+            self.obstacles.append(Cactus(SMALL_CACTUS, 325))
         if len(self.obstacles) == 0 and self.obstacle_type == 1:
-            self.obstacles.append(Large_Cactus(LARGE_CACTUS))
+            self.obstacles.append(Cactus(LARGE_CACTUS, 300))
         if len(self.obstacles) == 0 and self.obstacle_type == 2:
-            self.obstacles.append(Bird(BIRD))
+            self.obstacles.append(Bird(BIRD, random.randint(215, 300)))
+        if len(self.obstacles) == 0 and self.obstacle_type == 3:
+            self.obstacles.append(Bird(BAT, random.randint(215, 300)))
 
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
 
             if game.player.dino_rect.colliderect(obstacle.rect):
-                pygame.time.delay(500)
-                SOUNDS[0].play()
-                game.playing = False
-                game.death_count+=1
+                if not game.player.has_power_up:
+                    MUSICS[0].stop()
+                    MUSICS[1].stop()
+                    SOUNDS[0].play()
+                    pygame.time.delay(500)
+                    game.playing = False
+                    game.death_count+=1
+                    break                
+                else:
+                    self.obstacles.remove(obstacle)
                 break                
 
     def draw(self, screen):
